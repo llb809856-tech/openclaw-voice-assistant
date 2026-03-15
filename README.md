@@ -12,7 +12,7 @@ OpenClaw + MiniMax + SiliconFlow + Python
 [AI宠物哈罗教程.md](./AI宠物哈罗教程.md)
 
 ## Author
-米米可思
+卜金哲
 
 ---
 Everyone can have their own AI companion!
