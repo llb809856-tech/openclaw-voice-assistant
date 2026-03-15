@@ -1,0 +1,171 @@
+.skin-shop {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.shop-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.shop-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.currency {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #F59E0B;
+}
+
+.current-skin {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.current-skin h3 {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 12px;
+}
+
+.skin-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.skin-preview .skin-icon {
+  font-size: 48px;
+}
+
+.skin-preview .skin-name {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.skins-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.skin-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+  overflow: hidden;
+}
+
+.skin-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.skin-card.selected {
+  border: 2px solid #10B981;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+.skin-card.locked {
+  opacity: 0.7;
+}
+
+.rarity-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.skin-icon {
+  font-size: 64px;
+  text-align: center;
+  margin: 20px 0;
+  filter: drop-shadow(0 0 10px currentColor);
+}
+
+.skin-info {
+  text-align: center;
+}
+
+.skin-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.skin-description {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.status {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.status.unlocked {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10B981;
+}
+
+.status.locked {
+  background: rgba(245, 158, 11, 0.2);
+  color: #F59E0B;
+}
+
+.status.locked.can-afford {
+  background: rgba(59, 130, 246, 0.2);
+  color: #3B82F6;
+}
+
+.rarity-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #fff;
+}
+
+/* 稀有度颜色 */
+.rarity-default { border-left: 4px solid #9CA3AF; }
+.rarity-common { border-left: 4px solid #10B981; }
+.rarity-rare { border-left: 4px solid #3B82F6; }
+.rarity-epic { border-left: 4px solid #8B5CF6; }
+.rarity-legendary { border-left: 4px solid #F59E0B; }
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .skins-grid {
+    grid-template-columns: 1fr;
+  }
+}

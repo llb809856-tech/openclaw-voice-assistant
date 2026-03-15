@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>技术教程 | OpenClaw+QQ 机器人部署指南</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.8;
+      color: #333;
+      max-width: 677px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #fff;
+    }
+    h1, h2, h3 {
+      color: #1a1a1a;
+    }
+    code {
+      font-family: "Courier New", Courier, monospace;
+    }
+    pre {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background: #f5f5f5;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">公众号文章：QQ 机器人技术教程</h1></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h2 style="font-size: 20px; font-weight: bold; margin: 20px 0 12px; color: #1a1a1a;">标题备选</h2>
+1. 技术教程 | 30 分钟部署 OpenClaw+QQ 机器人，手把手教你配置
+2. 保姆级教程 | OpenClaw 接入 QQ 机器人完整指南（含配置文件）
+3. 不写代码！OpenClaw+QQ 机器人一键部署教程（2026 最新版）
+4. 实战教程 | 从零搭建你的第一个 QQ AI 机器人（附完整配置）</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h2 style="font-size: 20px; font-weight: bold; margin: 20px 0 12px; color: #1a1a1a;">摘要</h2>
+本文详细介绍如何在 30 分钟内部署 OpenClaw 并接入 QQ 机器人，包含 QQ 开放平台配置、OpenClaw 安装、插件配置、常见问题解决等完整流程。提供配置文件模板和避坑指南。</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h2 style="font-size: 20px; font-weight: bold; margin: 20px 0 12px; color: #1a1a1a;">正文</h2></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><blockquote style="border-left: 4px solid #00b894; padding: 12px 16px; margin: 16px 0; background: #f8f9fa; color: #555; font-style: italic;"><strong style="font-weight: bold;">前置要求：</strong> 有 QQ 账号、能访问外网、基础命令行操作能力</blockquote>
+> 
+<blockquote style="border-left: 4px solid #00b894; padding: 12px 16px; margin: 16px 0; background: #f8f9fa; color: #555; font-style: italic;"><strong style="font-weight: bold;">预计耗时：</strong> 30-60 分钟</blockquote>
+> 
+<blockquote style="border-left: 4px solid #00b894; padding: 12px 16px; margin: 16px 0; background: #f8f9fa; color: #555; font-style: italic;"><strong style="font-weight: bold;">成本：</strong> 0 元（QQ 机器人免费 + OpenClaw 开源）</blockquote></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h2 style="font-size: 20px; font-weight: bold; margin: 20px 0 12px; color: #1a1a1a;">01 环境准备</h2></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">系统要求</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><table style="border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 15px;"><tr><td style="border: 1px solid #ddd; padding: 10px;">系统</td><td style="border: 1px solid #ddd; padding: 10px;">版本</td><td style="border: 1px solid #ddd; padding: 10px;">备注</td></tr>
+</table>
+<table style="border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 15px;"><tr><td style="border: 1px solid #ddd; padding: 10px;">macOS</td><td style="border: 1px solid #ddd; padding: 10px;">12.0+</td><td style="border: 1px solid #ddd; padding: 10px;">推荐 M 系列芯片</td></tr>
+<tr><td style="border: 1px solid #ddd; padding: 10px;">Windows</td><td style="border: 1px solid #ddd; padding: 10px;">10/11</td><td style="border: 1px solid #ddd; padding: 10px;">需要 WSL2</td></tr>
+<tr><td style="border: 1px solid #ddd; padding: 10px;">Linux</td><td style="border: 1px solid #ddd; padding: 10px;">Ubuntu 20.04+</td><td style="border: 1px solid #ddd; padding: 10px;">推荐服务器部署</td></tr>
+<tr><td style="border: 1px solid #ddd; padding: 10px;">Docker</td><td style="border: 1px solid #ddd; padding: 10px;">20.0+</td><td style="border: 1px solid #ddd; padding: 10px;">最简部署方式</td></tr>
+</table>
+<h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">必要工具</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">检查 Node.js（v18+）</h1>
+node -v</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">检查 npm</h1>
+npm -v</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">检查 Docker（可选）</h1>
+docker -v
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">如果没有安装：</strong>
+<ul style="padding-left: 20px; margin: 12px 0;"><li style="margin: 8px 0; padding-left: 8px;">Node.js: https://nodejs.org/</li>
+<li style="margin: 8px 0; padding-left: 8px;">Docker: https://www.docker.com/</li>
+</ul>
+<hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h2 style="font-size: 20px; font-weight: bold; margin: 20px 0 12px; color: #1a1a1a;">02 创建 QQ 机器人</h2></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">Step 1: 访问 QQ 开放平台</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">打开浏览器，访问：
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>https://q.qq.com/
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">Step 2: 登录账号</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">使用手机 QQ 扫描二维码登录。</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">注意：</strong>
+<ul style="padding-left: 20px; margin: 12px 0;"><li style="margin: 8px 0; padding-left: 8px;">✅ 个人账号即可创建</li>
+<li style="margin: 8px 0; padding-left: 8px;">✅ 不需要企业资质</li>
+<li style="margin: 8px 0; padding-left: 8px;">⚠️ 建议使用常用账号（需要接收通知）</li>
+</ul>
+<h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">Step 3: 创建机器人</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">1. 点击「创建机器人」按钮
+2. 填写基本信息：
+   <pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>   机器人名称：你的 AI 助手（可自定义）
+   机器人头像：上传一张图片（建议 200x200）
+   机器人简介：一个智能 AI 助手
+   </code></pre>
+3. 选择应用场景：
+<ul style="padding-left: 20px; margin: 12px 0;"><li style="margin: 8px 0; padding-left: 8px;">✅ 单聊</li>
+<li style="margin: 8px 0; padding-left: 8px;">✅ 群聊</li>
+<li style="margin: 8px 0; padding-left: 8px;">✅ 频道（可选）</li>
+</ul>
+<h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">Step 4: 获取凭证</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">创建成功后，在「应用信息」页面保存以下信息：</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>AppID: 1234567890（示例）
+AppSecret: abcdefghijklmnopqrstuvwxyz（示例）
+Token: 可选，用于回调验证
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">⚠️ 重要：</strong>
+<ul style="padding-left: 20px; margin: 12px 0;"><li style="margin: 8px 0; padding-left: 8px;">AppSecret 只显示一次，务必复制保存</li>
+<li style="margin: 8px 0; padding-left: 8px;">如果忘记，需要重新生成</li>
+</ul>
+<h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">Step 5: 配置回调地址（可选）</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">如果需要接收事件通知，配置回调地址：</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>回调地址：http://你的服务器 IP:5800/qq/callback
+IP 白名单：添加你的服务器 IP
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">本地测试可跳过此步骤。</strong></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h2 style="font-size: 20px; font-weight: bold; margin: 20px 0 12px; color: #1a1a1a;">03 部署 OpenClaw</h2></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">方案 A：Docker 部署（推荐）</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">适合：</strong> 服务器部署、生产环境</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">1. 拉取镜像</h1>
+docker pull openclaw/openclaw:latest</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">2. 创建配置目录</h1>
+mkdir -p ~/openclaw/config
+mkdir -p ~/openclaw/data</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">3. 启动容器</h1>
+docker run -d \
+  --name openclaw \
+  -p 5800:5800 \
+  -v ~/openclaw/config:/root/.openclaw/config \
+  -v ~/openclaw/data:/root/.openclaw/data \
+  -e OPENCLAW_MODEL=bailian/qwen3.5-plus \
+  openclaw/openclaw:latest</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">4. 查看日志</h1>
+docker logs -f openclaw
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">验证：</strong> 访问 <code style="background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 14px; color: #e96900;">http://localhost:5800</code> 看到 Web 界面即成功。</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">方案 B：npm 安装（本地开发）</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">适合：</strong> 本地测试、技能开发</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">1. 全局安装</h1>
+npm install -g openclaw</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">2. 初始化配置</h1>
+openclaw init</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">3. 配置模型</h1>
+openclaw config set model bailian/qwen3.5-plus</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">4. 启动服务</h1>
+openclaw gateway start</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">5. 查看状态</h1>
+openclaw gateway status
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">方案 C：阿里云一键部署</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">适合：</strong> 新手、不想配置环境</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">1. 访问阿里云轻量应用服务器
+2. 选择 OpenClaw 应用镜像
+3. 点击「立即开通」
+4. 等待 3-5 分钟自动部署完成
+5. 获取公网 IP 和管理后台地址</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">成本：</strong> 约 24 元/月（基础配置）</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h2 style="font-size: 20px; font-weight: bold; margin: 20px 0 12px; color: #1a1a1a;">04 配置 QQ 插件</h2></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">Step 1: 安装 QQ 插件</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">Docker 环境</h1>
+docker exec -it openclaw openclaw plugins install @sliverp/qqbot@latest</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">npm 环境</h1>
+openclaw plugins install @sliverp/qqbot@latest
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">如果安装失败（网络问题）：</strong></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">使用国内镜像</h1>
+npm config set registry https://registry.npmmirror.com</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">或源码安装</h1>
+git clone https://github.com/sliverp/qqbot.git
+cd qqbot
+openclaw plugins install .
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">Step 2: 配置 QQ 凭证</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">设置 AppID</h1>
+openclaw config set channels.qq-official.appId "你的 AppID"</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">设置 AppSecret</h1>
+openclaw config set channels.qq-official.appSecret "你的 AppSecret"</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">设置 Token（如果配置了回调）</h1>
+openclaw config set channels.qq-official.token "你的 Token"</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">配置交互权限</h1>
+openclaw config set channels.qq-official.allowPrivateChat true
+openclaw config set channels.qq-official.allowChannelAt true
+openclaw config set channels.qq-official.allowGroupChat true
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">Step 3: 配置文件方式（可选）</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">编辑配置文件：</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">找到配置目录</h1>
+openclaw config path</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">编辑 config.json</h1>
+nano ~/.openclaw/config/config.json
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">配置文件模板：</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>{
+  "model": "bailian/qwen3.5-plus",
+  "channels": {
+    "qq-official": {
+      "appId": "你的 AppID",
+      "appSecret": "你的 AppSecret",
+      "token": "",
+      "allowPrivateChat": true,
+      "allowChannelAt": true,
+      "allowGroupChat": true,
+      "sandbox": false
+    }
+  },
+  "skills": {
+    "enabled": ["web-search", "browser", "exec"]
+  }
+}
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">Step 4: 重启服务</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">Docker 环境</h1>
+docker restart openclaw</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">npm 环境</h1>
+openclaw gateway restart</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">或使用服务管理</h1>
+openclaw service restart
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h2 style="font-size: 20px; font-weight: bold; margin: 20px 0 12px; color: #1a1a1a;">05 测试验证</h2></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">测试 1：单聊测试</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">1. 打开手机 QQ
+2. 搜索你的机器人名称
+3. 发送消息：<code style="background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 14px; color: #e96900;">你好</code>
+4. 等待响应（通常 3-10 秒）</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">预期响应：</strong>
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>你好！我是你的 AI 助手，有什么可以帮你的吗？
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">测试 2：功能测试</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">发送以下测试命令：</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">测试搜索</h1>
+今天北京天气怎么样？</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">测试计算</h1>
+123 * 456 等于多少？</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">测试创作</h1>
+写一首关于春天的诗</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">测试代码</h1>
+用 Python 写一个快速排序
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">测试 3：日志检查</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">查看实时日志</h1>
+docker logs -f openclaw</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">或</h1>
+openclaw gateway logs
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">正常日志示例：</strong>
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>[INFO] QQ message received: {"user_id": 123456, "message": "你好"}
+[INFO] Processing with model: bailian/qwen3.5-plus
+[INFO] Response sent: 你好！我是你的 AI 助手...
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h2 style="font-size: 20px; font-weight: bold; margin: 20px 0 12px; color: #1a1a1a;">06 常见问题解决</h2></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">Q1: 插件安装失败</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">错误信息：</strong>
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>npm ERR! network request failed
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">解决方案：</strong>
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">切换 npm 镜像</h1>
+npm config set registry https://registry.npmmirror.com</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">或使用源码安装</h1>
+git clone https://github.com/sliverp/qqbot.git
+cd qqbot
+openclaw plugins install .
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">Q2: 机器人无响应</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">排查步骤：</strong></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">1. 检查服务状态
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>openclaw gateway status
+<h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">或</h1>
+docker ps | grep openclaw
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">2. 检查 QQ 插件配置
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>openclaw config get channels.qq-official
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">3. 检查日志
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>docker logs openclaw | tail -50
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">4. 确认 QQ 机器人状态
+<ul style="padding-left: 20px; margin: 12px 0;"><li style="margin: 8px 0; padding-left: 8px;">登录 q.qq.com</li>
+<li style="margin: 8px 0; padding-left: 8px;">检查机器人是否「启用」状态</li>
+<li style="margin: 8px 0; padding-left: 8px;">检查 IP 白名单（如果配置了回调）</li>
+</ul>
+<hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">Q3: 响应速度慢</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">可能原因：</strong>
+<ul style="padding-left: 20px; margin: 12px 0;"><li style="margin: 8px 0; padding-left: 8px;">模型响应慢（网络问题）</li>
+<li style="margin: 8px 0; padding-left: 8px;">服务器性能不足</li>
+<li style="margin: 8px 0; padding-left: 8px;">技能调用耗时</li>
+</ul>
+<strong style="font-weight: bold;">优化方案：</strong></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">1. 切换更快的模型
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>openclaw config set model bailian/qwen3.5-plus
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">2. 禁用不需要的技能
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>{
+  "skills": {
+    "enabled": ["web-search"]
+  }
+}
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">3. 升级服务器配置
+<ul style="padding-left: 20px; margin: 12px 0;"><li style="margin: 8px 0; padding-left: 8px;">CPU: 2 核 → 4 核</li>
+<li style="margin: 8px 0; padding-left: 8px;">内存：4GB → 8GB</li>
+</ul>
+<hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">Q4: 中文乱码</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">解决方案：</strong></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">1. 检查系统编码
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>locale
+<h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">应该是 zh_CN.UTF-8 或 en_US.UTF-8</h1>
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">2. 设置环境变量
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>export LANG=zh_CN.UTF-8
+export LC_ALL=zh_CN.UTF-8
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">3. Docker 容器内设置
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>docker exec -it openclaw bash
+echo "export LANG=zh_CN.UTF-8" >> ~/.bashrc
+source ~/.bashrc
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h2 style="font-size: 20px; font-weight: bold; margin: 20px 0 12px; color: #1a1a1a;">07 进阶配置</h2></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">配置多个模型</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">主模型（默认）</h1>
+openclaw config set model bailian/qwen3.5-plus</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">备用模型</h1>
+openclaw config set models.fallback bailian/glm-5</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">特定任务使用特定模型</h1>
+openclaw config set models.code bailian/qwen3.5-plus
+openclaw config set models.creative minimax-cn/MiniMax-M2.5
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">配置技能白名单</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>{
+  "skills": {
+    "enabled": [
+      "web-search",
+      "browser",
+      "exec",
+      "message",
+      "feishu_doc"
+    ],
+    "disabled": [
+      "tts",
+      "canvas"
+    ]
+  }
+}
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">配置速率限制</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>{
+  "rateLimit": {
+    "messagesPerMinute": 10,
+    "tokensPerHour": 100000,
+    "concurrentRequests": 5
+  }
+}
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">配置持久化存储</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">数据目录</h1>
+openclaw config set dataPath /root/.openclaw/data</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">记忆文件</h1>
+openclaw config set memory.enabled true
+openclaw config set memory.path /root/.openclaw/memory
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h2 style="font-size: 20px; font-weight: bold; margin: 20px 0 12px; color: #1a1a1a;">08 安全建议</h2></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">1. 保护 AppSecret</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">不要提交到 git</h1>
+echo "config.json" >> .gitignore</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">使用环境变量</h1>
+export QQ_APP_SECRET="你的密钥"
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">2. 配置 IP 白名单</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">在 QQ 开放平台设置：
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>IP 白名单：你的服务器 IP
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">3. 启用沙箱模式（测试环境）</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>openclaw config set channels.qq-official.sandbox true
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">4. 定期更新</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">更新 OpenClaw</h1>
+npm update -g openclaw</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">或 Docker</h1>
+docker pull openclaw/openclaw:latest
+docker restart openclaw</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h1 style="font-size: 24px; font-weight: bold; margin: 24px 0 16px; color: #1a1a1a;">更新插件</h1>
+openclaw plugins update
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h2 style="font-size: 20px; font-weight: bold; margin: 20px 0 12px; color: #1a1a1a;">09 资源下载</h2></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">配置文件模板：</strong>
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>https://github.com/openclaw/openclaw/blob/main/config.example.json
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">QQ 机器人插件：</strong>
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>https://github.com/sliverp/qqbot
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">OpenClaw 官方文档：</strong>
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>https://docs.openclaw.ai
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">社区论坛：</strong>
+<pre style="background: #2d2d2d; color: #f8f8f2; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 14px; line-height: 1.6;"><code>https://discord.com/invite/clawd
+</code></pre></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h2 style="font-size: 20px; font-weight: bold; margin: 20px 0 12px; color: #1a1a1a;">10 下一步</h2></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">机器人已经跑起来了，接下来可以：</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">✅ 方向 1：定制技能</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">学习开发自定义 Skills，让机器人更懂你的需求。</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">✅ 方向 2：接入更多平台</h3>
+<ul style="padding-left: 20px; margin: 12px 0;"><li style="margin: 8px 0; padding-left: 8px;">飞书机器人</li>
+<li style="margin: 8px 0; padding-left: 8px;">钉钉机器人</li>
+<li style="margin: 8px 0; padding-left: 8px;">企业微信</li>
+<li style="margin: 8px 0; padding-left: 8px;">Telegram</li>
+</ul>
+<h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">✅ 方向 3：搭建多机器人矩阵</h3></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">利用 5 个机器人名额，创建不同用途的 AI 助手。</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><h3 style="font-size: 18px; font-weight: bold; margin: 16px 0 10px; color: #1a1a1a;">✅ 方向 4：商业化运营</h3>
+<ul style="padding-left: 20px; margin: 12px 0;"><li style="margin: 8px 0; padding-left: 8px;">AI 代运营服务</li>
+<li style="margin: 8px 0; padding-left: 8px;">垂直领域问答</li>
+<li style="margin: 8px 0; padding-left: 8px;">机器人定制开发</li>
+</ul>
+<hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><strong style="font-weight: bold;">🎁 福利：</strong></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">关注公众号，回复"QQ 机器人"获取：
+1. 完整配置文件模板（JSON）
+2. 常见问题排查手册（PDF）
+3. 技能开发教程
+4. 技术交流群入口</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;"><hr style="border: none; border-top: 2px solid #eee; margin: 24px 0;"></p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">*本文测试环境：OpenClaw v2.6.0 / QQ 开放平台 2026.03*</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">*遇到问题？在评论区留言，我会逐一回复*</p><p style="margin: 16px 0; line-height: 1.8; font-size: 16px; color: #333;">*如果觉得有用，请点赞 + 在看 + 分享*
+</p>
+</body>
+</html>
