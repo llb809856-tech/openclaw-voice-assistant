@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "xiaohongshu-mcp": {
+      "baseUrl": "http://localhost:18060/mcp"
+    },
+    "douyin-mcp": {
+      "baseUrl": "http://localhost:18062/mcp"
+    }
+  },
+  "imports": []
+}

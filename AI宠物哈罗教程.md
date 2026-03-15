@@ -149,5 +149,5 @@ python3 voice_full.py
 
 ---
 
-*贡献者：卜金哲 + 小林（OpenClaw）*
+*贡献者：米米可思 + 小林（OpenClaw）*
 *日期：2026年3月15日*
